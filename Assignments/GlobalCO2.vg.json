@@ -1,0 +1,56 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Global Total Greenhouse CO₂ Emissions in Million Tonnes by Country, 2025",
+  "subtitle": "Size = Global Carbon Dioxide Emissions (million tonnes), Colour = Region"
+  },
+  "width": 900,
+  "height": 500,
+  "projection": {"type": "equalEarth"},
+  "layer": [
+    {
+      "data": {"sphere": true},
+      "mark": {"type": "geoshape", "fill": "#e6f2ff"}
+    },
+    {
+      "data": {"graticule": true},
+      "mark": {"type": "geoshape", "stroke": "#cccccc", "strokeWidth": 0.5}
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/vega/vega-datasets/master/data/world-110m.json",
+        "format": {"type": "topojson", "feature": "countries"}
+      },
+      "mark": {"type": "geoshape", "fill": "#f0e4d7", "stroke": "white"}
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/GlobalClimateData2025Updated.csv"
+      },
+      "mark": {"type": "circle", "opacity": 0.8, "stroke": "white", "strokeWidth": 0.9},
+      "encoding": {
+        "longitude": {"field": "Longitude", "type": "quantitative"},
+        "latitude": {"field": "Latitude", "type": "quantitative"},
+        "size": {
+          "field": "co2_emissions_mt",
+          "type": "quantitative",
+          "scale": {"range": [20, 1500], "type": "sqrt"},
+          "legend": {"title": "Total CO₂ (Million Tonnes)",
+        "orient": "right"}  
+        },
+        "color": {
+          "field": "region",
+          "type": "nominal",
+          "scale": {"scheme": "accent"},
+          "legend": {"title": "World Regions",
+        "orient": "bottom",
+      "anchor": "middle"} 
+        },
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Country Name"},
+          {"field": "co2_emissions_mt", "type": "quantitative", "title": "Total Carbon Dioxide Emissions (million tonnes)"}
+        ]
+      }
+    }
+  ]
+}

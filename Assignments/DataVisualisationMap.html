@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vega-Lite Map</title>
+  <!-- Load Vega, Vega-Lite, and Vega-Embed -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+</head>
+<body>
+  <h2>Global Total Carbon Dioxide Emissions Data Visualisation Map in 2025</h2>
+  <div id="vis"></div>
+
+  <script>
+    // Embed by pointing to the JSON file
+    vegaEmbed('#vis', 'GlobalCO2.vg.json').then(result => {
+      // You can interact with the chart here if needed
+    }).catch(console.error);
+  </script>
+</body>
+</html>
