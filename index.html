@@ -28,6 +28,15 @@
       margin-bottom: 80px;
       text-align: center;
     }
+    /* ---- Custom Vega-Lite tooltip styling ---- */
+    vega-tooltip::part(key) {
+   font-weight: 400;   /* regular for attribute labels */
+   font-style: normal;
+    }
+    vega-tooltip::part(value) {
+   font-weight: 700;   /* bold for values */
+   font-style: normal;
+    }
   </style>
 </head>
 <body>

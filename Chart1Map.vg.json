@@ -27,6 +27,16 @@
       "data": {
         "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/GlobalClimateData2025Updated.csv"
       },
+      "transform": [
+        {
+          "calculate": "toNumber(datum.co2_emissions_mt)",
+          "as": "CO2_Value"
+        },
+        {
+          "calculate": "isFinite(datum.CO2_Value) ? format(datum.CO2_Value, ',') + ' million tonnes CO₂' : '—'",
+          "as": "CO2_Label"
+        }
+      ],
       "mark": {"type": "circle", "opacity": 0.8, "stroke": "white", "strokeWidth": 0.9},
       "encoding": {
         "longitude": {"field": "Longitude", "type": "quantitative"},
@@ -52,9 +62,9 @@
         "tooltip": [
           {"field": "country", "type": "nominal", "title": "Country name:"},
           {"field": "region", "type": "nominal", "title": "Region:"},
-          {"field": "population_millions", "type": "quantitative", "title": "Country population"},
-          {"field": "energy_efficiency_score", "type": "quantitative", "title": "Energy efficiency score"},
-          {"field": "co2_emissions_mt", "type": "quantitative", "title": "Total amount of CO₂ emissions in million tonnes:"}
+          {"field": "population_millions", "type": "quantitative", "title": "Country population:", "format": ","},
+          {"field": "energy_efficiency_score", "type": "quantitative", "title": "Energy efficiency score:"},
+          {"field": "CO2_Label", "type": "nominal", "title": "Total amount of CO₂ emissions:"}
         ]
       }
     },

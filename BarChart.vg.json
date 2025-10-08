@@ -41,6 +41,10 @@
     {"filter": "RegionFilter == null || datum.region == RegionFilter"},
     {"calculate": "datum.temperature_anomaly_celsius", "as": "Temp_Anomaly"},
     {
+      "calculate": "format(datum.Temp_Anomaly, '.2f') + '°C'",
+      "as": "Temp_Label"
+    },
+    {
       "window": [{"op": "rank", "as": "rank"}],
       "sort": [{"field": "Temp_Anomaly", "order": "descending"}]
     },
@@ -68,13 +72,9 @@
           "scale": {"scheme": "orangered"}
         },
         "tooltip": [
-          {"field": "country", "title": "Country"},
-          {"field": "region", "title": "Region"},
-          {
-            "field": "Temp_Anomaly",
-            "title": "Temperature Anomaly (°C)",
-            "format": ".2f"
-          }
+          {"field": "country", "title": "Country:"},
+          {"field": "region", "title": "Region:"},
+          {"field": "Temp_Label", "title": "Temperature Anomaly:"}
         ]
       }
     },
@@ -103,4 +103,3 @@
     "axis": {"labelFontSize": 12, "titleFontSize": 13}
   }
 }
-
