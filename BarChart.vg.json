@@ -83,8 +83,9 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "dx": 5,
-        "fontSize": 11
+        "dx": -25,
+        "fontSize": 11,
+        "color": "white"
       },
       "encoding": {
         "y": {"field": "country", "type": "nominal", "sort": "-x"},
@@ -102,3 +103,4 @@
     "axis": {"labelFontSize": 12, "titleFontSize": 13}
   }
 }
+
