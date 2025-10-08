@@ -2,21 +2,61 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Vega-Lite Map</title>
+  <title>Global Climate Visualisations (2025)</title>
+
   <!-- Load Vega, Vega-Lite, and Vega-Embed -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background-color: #fafafa;
+    }
+    h1 {
+      text-align: center;
+      color: #1a5276;
+      margin-bottom: 50px;
+    }
+    h2 {
+      color: #1a5276;
+      margin-top: 50px;
+    }
+    .chart-container {
+      margin-bottom: 80px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-  <h2>Global Total Carbon Dioxide Emissions Data Visualisation Map in 2025</h2>
-  <div id="vis"></div>
+
+  <h1>Global Climate Impact Visualisations (2025)</h1>
+
+  <!-- Chart 1: CO₂ Emissions Map -->
+  <div class="chart-container">
+    <h2>Global Total Carbon Dioxide Emissions Map (2025)</h2>
+    <div id="vis1"></div>
+  </div>
+
+  <!-- Chart 2: Temperature Anomaly Bar Chart -->
+  <div class="chart-container">
+    <h2>Top 15 Countries by Surface Temperature Anomaly (°C, 2025)</h2>
+    <div id="vis2"></div>
+  </div>
 
   <script>
-    // Embed by pointing to the JSON file
-    vegaEmbed('#vis', 'GlobalCO2.vg.json').then(result => {
-      // You can interact with the chart here if needed
-    }).catch(console.error);
+    // Embed CO₂ Emissions Map
+    vegaEmbed('#vis1', 'Chart1Map.vg.json', { actions: false })
+      .then(() => console.log("CO₂ Map loaded."))
+      .catch(console.error);
+
+    // Embed Temperature Anomaly Bar Chart
+    vegaEmbed('#vis2', 'BarChart.vg.json', { actions: false })
+      .then(() => console.log("Temperature chart loaded."))
+      .catch(console.error);
   </script>
+
 </body>
 </html>
