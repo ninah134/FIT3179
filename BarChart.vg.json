@@ -72,7 +72,7 @@
           "scale": {"scheme": "orangered"}
         },
         "tooltip": [
-          {"field": "country", "title": "Country:"},
+          {"field": "country", "title": "Country name:"},
           {"field": "region", "title": "Region:"},
           {"field": "Temp_Label", "title": "Temperature Anomaly:"}
         ]
