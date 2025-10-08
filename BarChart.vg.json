@@ -1,54 +1,35 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": {
-    "text": "Temperature Anomaly (°C) by Countries Across Regions, 2025",
-    "subtitle": "Select a region to filter, higher values indicate stronger warming",
+    "text": "Top 15 Countries Globally with Surface Temperature Change (°C) and Top Countries By Region, in 2025",
+    "subtitle": "Top 15 countries globally with the highest surface temperature changes are shown in the first filter, top countries in different regions shown in the region selection filters",
     "anchor": "start"
   },
   "width": 700,
-  "height": 400,
+  "height": 420,
   "data": {
     "url": "https://raw.githubusercontent.com/ninah134/FIT3179/main/Assignments/GlobalClimateData2025Updated.csv"
   },
   "params": [
     {
-      "name": "RegionFilter",
+      "name": "Region_selection",
       "bind": {
         "input": "select",
-        "options": [
-          null,
-          "Asia",
-          "Europe",
-          "North America",
-          "South America",
-          "Africa",
-          "Oceania"
-        ],
-        "labels": [
-          "Show All Regions",
-          "Asia",
-          "Europe",
-          "North America",
-          "South America",
-          "Africa",
-          "Oceania"
-        ],
-        "name": "Select Region: "
+        "options": [null, "Asia", "Europe", "Europe/Asia", "Middle East", "Oceania"],
+        "labels": ["Show All", "Asia", "Europe", "Europe/Asia", "Middle East", "Oceania"],
+        "name": "Region selection: "
       }
     }
   ],
   "transform": [
-    {"filter": "RegionFilter == null || datum.region == RegionFilter"},
     {"calculate": "datum.temperature_anomaly_celsius", "as": "Temp_Anomaly"},
+    {"calculate": "format(datum.Temp_Anomaly, '.2f') + '°C'", "as": "Temp_Label"},
     {
-      "calculate": "format(datum.Temp_Anomaly, '.2f') + '°C'",
-      "as": "Temp_Label"
-    },
-    {
-      "window": [{"op": "rank", "as": "rank"}],
+      "window": [{"op": "rank", "as": "GlobalRank"}],
       "sort": [{"field": "Temp_Anomaly", "order": "descending"}]
     },
-    {"filter": "datum.rank <= 10"}
+    {"filter": "datum.GlobalRank <= 10"},
+    {"filter": "Region_selection == null || datum.region == Region_selection"}
   ],
   "layer": [
     {
@@ -57,24 +38,29 @@
         "y": {
           "field": "country",
           "type": "nominal",
-          "sort": "-x",
+          "sort": {"field": "Temp_Anomaly", "order": "descending"},
           "title": "Country Name"
         },
         "x": {
           "field": "Temp_Anomaly",
           "type": "quantitative",
-          "title": "Temperature Change Anomaly (°C)"
+          "title": "Amount of Average Surface Temperature Change (°C)"
         },
         "color": {
           "field": "region",
           "type": "nominal",
           "title": "Region",
-          "scale": {"scheme": "orangered"}
+          "scale": {
+            "domain": ["Asia", "Europe", "Europe/Asia", "Middle East", "Oceania"],
+            "range": ["#e41a1c", "#984ea3", "#ff7f00", "#a6cee3", "#377eb8"]
+          }
         },
+        "opacity": {"value": 0.6},
+        "legend": {"title": "Region"},
         "tooltip": [
           {"field": "country", "title": "Country name:"},
           {"field": "region", "title": "Region:"},
-          {"field": "Temp_Label", "title": "Temperature Anomaly:"}
+          {"field": "Temp_Label", "title": "Temperature change:"}
         ]
       }
     },
@@ -90,11 +76,7 @@
       "encoding": {
         "y": {"field": "country", "type": "nominal", "sort": "-x"},
         "x": {"field": "Temp_Anomaly", "type": "quantitative"},
-        "text": {
-          "field": "Temp_Anomaly",
-          "type": "quantitative",
-          "format": ".2f"
-        }
+        "text": {"field": "Temp_Anomaly", "type": "quantitative", "format": ".2f"}
       }
     }
   ],
