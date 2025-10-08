@@ -1,0 +1,104 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": {
+    "text": "Temperature Anomaly (°C) by Countries Across Regions, 2025",
+    "subtitle": "Select a region to filter, higher values indicate stronger warming",
+    "anchor": "start"
+  },
+  "width": 700,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/ninah134/FIT3179/main/Assignments/GlobalClimateData2025Updated.csv"
+  },
+  "params": [
+    {
+      "name": "RegionFilter",
+      "bind": {
+        "input": "select",
+        "options": [
+          null,
+          "Asia",
+          "Europe",
+          "North America",
+          "South America",
+          "Africa",
+          "Oceania"
+        ],
+        "labels": [
+          "Show All Regions",
+          "Asia",
+          "Europe",
+          "North America",
+          "South America",
+          "Africa",
+          "Oceania"
+        ],
+        "name": "Select Region: "
+      }
+    }
+  ],
+  "transform": [
+    {"filter": "RegionFilter == null || datum.region == RegionFilter"},
+    {"calculate": "datum.temperature_anomaly_celsius", "as": "Temp_Anomaly"},
+    {
+      "window": [{"op": "rank", "as": "rank"}],
+      "sort": [{"field": "Temp_Anomaly", "order": "descending"}]
+    },
+    {"filter": "datum.rank <= 10"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 4},
+      "encoding": {
+        "y": {
+          "field": "country",
+          "type": "nominal",
+          "sort": "-x",
+          "title": "Country Name"
+        },
+        "x": {
+          "field": "Temp_Anomaly",
+          "type": "quantitative",
+          "title": "Temperature Change Anomaly (°C)"
+        },
+        "color": {
+          "field": "region",
+          "type": "nominal",
+          "title": "Region",
+          "scale": {"scheme": "orangered"}
+        },
+        "tooltip": [
+          {"field": "country", "title": "Country"},
+          {"field": "region", "title": "Region"},
+          {
+            "field": "Temp_Anomaly",
+            "title": "Temperature Anomaly (°C)",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 5,
+        "fontSize": 11
+      },
+      "encoding": {
+        "y": {"field": "country", "type": "nominal", "sort": "-x"},
+        "x": {"field": "Temp_Anomaly", "type": "quantitative"},
+        "text": {
+          "field": "Temp_Anomaly",
+          "type": "quantitative",
+          "format": ".2f"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": "transparent"},
+    "axis": {"labelFontSize": 12, "titleFontSize": 13}
+  }
+}
