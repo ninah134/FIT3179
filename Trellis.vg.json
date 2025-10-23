@@ -1,0 +1,109 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "title": {
+    "text": "Global Energy Consumption by Region",
+    "anchor": "start",
+    "fontSize": 18,
+    "fontWeight": "bold",
+    "color": "#333"
+  },
+  "description": "Vertical (1×3) scatter plot layout showing coal, natural gas, and oil consumption by region for 10 countries.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/GlobalClimateData2025Updated.csv"
+  },
+  "transform": [
+    {
+      "filter": "indexof(['United States','Brazil','Germany','Sweden','Russia','China','India','Saudi Arabia','Australia','South Korea'], datum.country) >= 0"
+    },
+    {
+      "calculate": "format(datum.coal_consumption_mtoe, '.2f') + ' Mtoe'",
+      "as": "Coal_Label"
+    },
+    {
+      "calculate": "format(datum.natural_gas_consumption_mtoe, '.2f') + ' Mtoe'",
+      "as": "Gas_Label"
+    },
+    {
+      "calculate": "format(datum.oil_consumption_mtoe, '.2f') + ' Mtoe'",
+      "as": "Oil_Label"
+    }
+  ],
+  "vconcat": [
+    {
+      "title": "Coal Consumption (Mtoe)",
+      "mark": {"type": "point", "filled": true, "size": 100, "opacity": 0.85},
+      "encoding": {
+        "x": {
+          "field": "coal_consumption_mtoe",
+          "type": "quantitative",
+          "title": "Consumption (Mtoe)",
+          "scale": {"zero": false}
+        },
+        "y": {"field": "country", "type": "ordinal", "title": "Country", "sort": "-x"},
+        "color": {
+          "field": "region",
+          "type": "nominal",
+          "title": "Region",
+          "scale": {"scheme": "Dark2"}
+        },
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Country Name"},
+          {"field": "region", "type": "nominal", "title": "Region"},
+          {"field": "Coal_Label", "type": "nominal", "title": "Coal Consumption"}
+        ]
+      }
+    },
+    {
+      "title": "Natural Gas Consumption (Mtoe)",
+      "mark": {"type": "point", "filled": true, "size": 100, "opacity": 0.85},
+      "encoding": {
+        "x": {
+          "field": "natural_gas_consumption_mtoe",
+          "type": "quantitative",
+          "title": "Consumption (Mtoe)",
+          "scale": {"zero": false}
+        },
+        "y": {"field": "country", "type": "ordinal", "title": "Country", "sort": "-x"},
+        "color": {
+          "field": "region",
+          "type": "nominal",
+          "title": "Region",
+          "scale": {"scheme": "Dark2"}
+        },
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Country Name"},
+          {"field": "region", "type": "nominal", "title": "Region"},
+          {"field": "Gas_Label", "type": "nominal", "title": "Natural Gas Consumption"}
+        ]
+      }
+    },
+    {
+      "title": "Oil Consumption (Mtoe)",
+      "mark": {"type": "point", "filled": true, "size": 100, "opacity": 0.85},
+      "encoding": {
+        "x": {
+          "field": "oil_consumption_mtoe",
+          "type": "quantitative",
+          "title": "Consumption (Mtoe)",
+          "scale": {"zero": false}
+        },
+        "y": {"field": "country", "type": "ordinal", "title": "Country", "sort": "-x"},
+        "color": {
+          "field": "region",
+          "type": "nominal",
+          "title": "Region",
+          "scale": {"scheme": "Dark2"}
+        },
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Country Name"},
+          {"field": "region", "type": "nominal", "title": "Region"},
+          {"field": "Oil_Label", "type": "nominal", "title": "Oil Consumption"}
+        ]
+      }
+    }
+  ],
+  "config": {
+    "axis": {"labelFontSize": 10, "titleFontSize": 12},
+    "legend": {"labelFontSize": 10, "titleFontSize": 12}
+  }
+}

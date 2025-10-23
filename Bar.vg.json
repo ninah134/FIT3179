@@ -1,0 +1,88 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background": null,
+  "title": {
+    "text": "Top 15 Countries Globally through Surface Temperature Change (°C) in 2025",
+    "subtitle": "Top 15 countries globally with the highest surface temperature changes, can be filtered by region through the region selection filters",
+    "anchor": "start"
+  },
+  "width": 500,
+  "height": 400,
+  "data": {
+    "url": "https://raw.githubusercontent.com/ninah134/FIT3179/main/Assignments/GlobalClimateData2025Updated.csv"
+  },
+  "params": [
+    {
+      "name": "Region_selection",
+      "bind": {
+        "input": "select",
+        "options": [null, "Asia", "Europe", "Europe/Asia", "Middle East", "Oceania"],
+        "labels": ["Show All", "Asia", "Europe", "Europe/Asia", "Middle East", "Oceania"],
+        "name": "Region selection: "
+      }
+    }
+  ],
+  "transform": [
+    {"calculate": "datum.temperature_anomaly_celsius", "as": "Temp_Anomaly"},
+    {"calculate": "format(datum.Temp_Anomaly, '.2f') + '°C'", "as": "Temp_Label"},
+    {
+      "window": [{"op": "rank", "as": "GlobalRank"}],
+      "sort": [{"field": "Temp_Anomaly", "order": "descending"}]
+    },
+    {"filter": "datum.GlobalRank <= 10"},
+    {"filter": "Region_selection == null || datum.region == Region_selection"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "bar", "cornerRadiusEnd": 4},
+      "encoding": {
+        "y": {
+          "field": "country",
+          "type": "nominal",
+          "sort": {"field": "Temp_Anomaly", "order": "descending"},
+          "title": "Country Name"
+        },
+        "x": {
+          "field": "Temp_Anomaly",
+          "type": "quantitative",
+          "title": "Amount of Average Surface Temperature Change (°C)"
+        },
+        "color": {
+          "field": "region",
+          "type": "nominal",
+          "title": "Region",
+          "scale": {
+            "domain": ["Asia", "Europe", "Europe/Asia", "Middle East", "Oceania"],
+            "range": ["#1b9e77", "#d95f02", "#7570b3", "#e7298a", "#66a61e"]
+          }
+        },
+        "opacity": {"value": 0.8},
+        "legend": {"title": "Region"},
+        "tooltip": [
+          {"field": "country", "title": "Country name:"},
+          {"field": "region", "title": "Region:"},
+          {"field": "Temp_Label", "title": "Temperature change:"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": -25,
+        "fontSize": 11,
+        "color": "white"
+      },
+      "encoding": {
+        "y": {"field": "country", "type": "nominal", "sort": "-x"},
+        "x": {"field": "Temp_Anomaly", "type": "quantitative"},
+        "text": {"field": "Temp_Anomaly", "type": "quantitative", "format": ".2f"}
+      }
+    }
+  ],
+  "config": {
+    "view": {"stroke": "transparent"},
+    "axis": {"labelFontSize": 12, "titleFontSize": 13}
+  }
+}

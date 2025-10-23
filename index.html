@@ -2,70 +2,574 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Climate Change (2025)</title>
+  <title>Global Climate Change</title>
 
-  <!-- Load Vega, Vega-Lite, and Vega-Embed -->
+  <!-- Vega libraries -->
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400&display=swap" rel="stylesheet">
+
+
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      background-color: #fafafa;
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: url("https://raw.githubusercontent.com/ninah134/FIT3179/main/Assignments/leaves-8222919.jpg")
+                  no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Roboto', sans-serif;
     }
+
+    /* === MAIN CONTAINER STYLE === */
+    .section-container {
+      background-color: rgba(255,255,255,0.95);
+      width: 75%;
+      margin: 40px auto;
+      padding: 10px 40px;                /* ⬆ extra vertical space */
+      border-radius: 12px;
+      box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 20px;                         /* ⬆ more space between rows */
+    }
+
     h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 50px;
       text-align: center;
-      color: #1a5276;
-      margin-bottom: 50px;
+      margin-bottom: 10px;
     }
+
     h2 {
-      color: #1a5276;
-      margin-top: 50px;
+      font-family: 'Anton', sans-serif;
+      font-size: 32px;
+      color: #000;
+      margin-bottom: 15px;
     }
-    .chart-container {
-      margin-bottom: 80px;
-      text-align: center;
+
+    p {
+      font-size: 15px;
+      color: #333;
+      line-height: 1.6;
     }
-    /* ---- Custom Vega-Lite tooltip styling ---- */
-    vega-tooltip::part(key) {
-   font-weight: 400;   /* regular for attribute labels */
-   font-style: normal;
+
+    /* === ROW AND CHART LAYOUT === */
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;                         /* ⬆ more horizontal spacing */
+      flex-wrap: wrap;
     }
-    vega-tooltip::part(value) {
-   font-weight: 700;   /* bold for values */
-   font-style: normal;
+
+    .chart {
+      flex: 1;
+      max-width: 100%;
+      height: auto;
+      min-height: 320px;                 /* ⬆ taller charts area */
+      overflow: visible;                 /* ⬆ prevent clipping */
+    }
+
+    .text {
+      flex: 1;
+      text-align: left;
+    }
+
+    @media (max-width: 900px) {
+      .row {
+        flex-direction: column;
+      }
+      .chart {
+        width: 100%;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Global Climate Change Data Visualisation (2025)</h1>
-  <p style="text-align: center;"><i>What are the factors affecting climate change and what can we do to combat this?</i></p>
-
-  <!-- Chart 1: CO₂ Emissions Map -->
-  <div class="chart-container">
-    <h2>Global Total Carbon Dioxide Emissions Map (2025)</h2>
-    <div id="vis1"></div>
+  <!-- ======= Title ======= -->
+  <div class="section-container" style="text-align:center; padding:25px 30px;">
+    <h1 style="font-size:50px; margin-bottom:5px;">Climate Change</h1>
+    <h2 style="font-family:'Nunito Sans',sans-serif; font-weight:400; margin-top:0; font-style:italic;">Global Challenges and Action</h2>
   </div>
 
-  <!-- Chart 2: Temperature Anomaly Bar Chart -->
-  <div class="chart-container">
-    <h2>Top 15 Countries Globally and Within Regions' Surface Temperature Change Bar Chart (2025)</h2>
-    <div id="vis2"></div>
+  <!-- ======= 1. LOCATION ======= -->
+  <div class="section-container" style="min-height:1380px;">
+    <h2 style="margin-bottom:-20px;">Location</h2>
+
+    <!-- ROW 1: Map -->
+    <div class="row">
+      <div class="text">
+<p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+  The <span style="color:#0077b6; font-weight:bold;">world map</span> visualises 
+  <span style="color:#0077b6; font-weight:bold;">global greenhouse gas emissions</span>, 
+  highlighting countries with the highest 
+  <span style="color:#e63946; font-weight:bold;">CO₂ output</span> in 2025. 
+  Larger circles represent greater emission volumes, with the most significant emitters 
+  concentrated in <span style="color:#2a9d8f; font-weight:bold;">Asia</span>, 
+  <span style="color:#2a9d8f; font-weight:bold;">North America</span>, and 
+  <span style="color:#2a9d8f; font-weight:bold;">Europe</span>. 
+  <span style="color:#f4a261; font-weight:bold;">China</span> stands out as the 
+  <span style="color:#e63946; font-weight:bold;">largest emitter worldwide</span>, 
+  reflecting its massive industrial output and energy demands, followed by the 
+  <span style="color:#f4a261; font-weight:bold;">United States</span>. 
+  <span style="color:#264653; font-weight:bold;">Australia</span>, while contributing a smaller share globally, 
+  remains one of the highest per-capita emitters due to its reliance on fossil fuels 
+  and resource-intensive industries. 
+  This distribution shows how <span style="color:#0077b6; font-weight:bold;">industrialised regions</span> 
+  contribute disproportionately to <span style="color:#e63946; font-weight:bold;">global emissions</span>, 
+  reflecting ongoing challenges in achieving 
+  <span style="color:#2a9d8f; font-weight:bold;">climate balance</span> 
+  and <span style="color:#2a9d8f; font-weight:bold;">equitable emission reductions</span>.
+</p>
+<p style="font-style:italic; color:#555; margin-top:10px;">
+As rising carbon emissions reveal the uneven environmental footprint across regions, the next step is to understand how patterns of global energy consumption drive these disparities.
+</p>
+      </div>
+      <div id="vis1" class="chart"></div>
+    </div>
+
+    <!-- ROW 3: Trellis -->
+    <div class="row">
+      <div class="text" margin-top:-100px;>
+        <h2> Energy Consumption </h2>
+<p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+  <span style="color:#0077b6; font-weight:bold;">Globally</span>, 
+  <span style="color:#e63946; font-weight:bold;">energy consumption</span> varies widely by region, 
+  reflecting differences in <span style="color:#0077b6; font-weight:bold;">industrial development</span>, 
+  population size, and access to 
+  <span style="color:#2a9d8f; font-weight:bold;">renewable resources</span>. 
+  <span style="color:#2a9d8f; font-weight:bold;">Asia</span> remains the largest 
+  <span style="color:#e63946; font-weight:bold;">energy consumer</span>, driven by rapid 
+  <span style="color:#0077b6; font-weight:bold;">industrialisation</span> and urban growth, 
+  while <span style="color:#2a9d8f; font-weight:bold;">North America</span> and 
+  <span style="color:#2a9d8f; font-weight:bold;">Europe</span> maintain high but stabilising 
+  <span style="color:#e63946; font-weight:bold;">energy demands</span> as they transition toward 
+  <span style="color:#2a9d8f; font-weight:bold;">cleaner technologies</span>. 
+  In contrast, parts of <span style="color:#2a9d8f; font-weight:bold;">Oceania</span> consume far less energy overall, 
+  though their <span style="color:#2a9d8f; font-weight:bold;">renewable adoption rates</span> are gradually increasing.
+</p>
+
+<p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+  The <span style="color:#0077b6; font-weight:bold;">trellis chart</span> provides a 
+  <span style="color:#0077b6; font-weight:bold;">regional comparison</span> of 
+  <span style="color:#e63946; font-weight:bold;">fuel emission trends</span> across multiple countries, 
+  illustrating how these patterns align with 
+  <span style="color:#e63946; font-weight:bold;">global energy use</span> and can contribute to 
+  <span style="color:#e63946; font-weight:bold;">global warming</span>. 
+  Each small multiple highlights <span style="color:#0077b6; font-weight:bold;">geographic differences</span>, 
+  showing that <span style="color:#0077b6; font-weight:bold;">emerging economies</span> are steadily increasing 
+  <span style="color:#e63946; font-weight:bold;">fuel emissions</span>, while 
+  <span style="color:#0077b6; font-weight:bold;">developed nations</span> show slower growth or slight declines. 
+  <span style="color:#e63946; font-weight:bold;">Coal consumption</span> remains highest in 
+  <span style="color:#f4a261; font-weight:bold;">China</span>, driven by its vast industrial production and energy demand, 
+  whereas the <span style="color:#f4a261; font-weight:bold;">United States</span> records the greatest use of 
+  <span style="color:#e63946; font-weight:bold;">natural gas</span> and 
+  <span style="color:#e63946; font-weight:bold;">oil</span>, reflecting its diversified yet 
+  <span style="color:#e63946; font-weight:bold;">carbon-intensive energy mix</span>. 
+  In contrast, <span style="color:#264653; font-weight:bold;">Australia</span> exhibits one of the lowest levels of 
+  <span style="color:#e63946; font-weight:bold;">coal</span>, 
+  <span style="color:#e63946; font-weight:bold;">natural gas</span>, and 
+  <span style="color:#e63946; font-weight:bold;">oil consumption</span> among the group, indicating a 
+  <span style="color:#2a9d8f; font-weight:bold;">positive shift toward cleaner energy sources</span> and 
+  <span style="color:#2a9d8f; font-weight:bold;">stronger climate action efforts</span>.
+</p>
+      </div>
+      <div id="vis3" class="chart" style="max-width:700px; height:80px; margin:auto; margin-top:20px;"></div>
+    </div>
+
+    <p style="font-style:italic; color:#555; margin-top:10px;">
+  As energy drives economies, it also fuels the rising temperatures that define <br> our century’s greatest climate challenge.
+</p>
+  </div>
+<!-- ======= 2. TEMPERATURE ======= -->
+<div class="section-container">
+  <h2>Temperature</h2>
+
+  <!-- FIRST ROW: chart left, text right -->
+  <div class="row normal-layout">
+    <div id="vis4" class="chart"></div>
+    <div class="text">
+      <p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+        <span style="color:#0077b6; font-weight:bold;">Global surface temperatures</span> continue to rise in the 
+        <span style="color:#0077b6; font-weight:bold;">current century</span>, 
+        reflecting the ongoing intensification of 
+        <span style="color:#e63946; font-weight:bold;">climate change</span> worldwide. 
+        These visuals compare <span style="color:#e63946; font-weight:bold;">temperature changes</span> 
+        and <span style="color:#e63946; font-weight:bold;">anomalies</span> across countries and time periods, 
+        revealing regional disparities in climate patterns. 
+        <span style="color:#f4a261; font-weight:bold;">Russia</span> and 
+        <span style="color:#f4a261; font-weight:bold;">Saudi Arabia</span> record the 
+        <span style="color:#e63946; font-weight:bold;">highest surface temperature changes</span> with 2.80°C increases, 
+        reflecting their strong link to 
+        <span style="color:#e63946; font-weight:bold;">greenhouse gas emissions</span> 
+        and extensive reliance on fossil fuel industries. 
+        <span style="color:#264653; font-weight:bold;">Australia</span> shows a 
+        <span style="color:#2a9d8f; font-weight:bold;">moderate increase</span> in temperature, 
+        aligning more closely with the 
+        <span style="color:#0077b6; font-weight:bold;">global average</span> 
+        and demonstrating gradual progress toward sustainable climate practices. 
+        Meanwhile, <span style="color:#2a9d8f; font-weight:bold;">European countries</span> exhibit the 
+        <span style="color:#2a9d8f; font-weight:bold;">lowest temperature changes</span>, 
+        indicating effective <span style="color:#2a9d8f; font-weight:bold;">climate care</span> 
+        and stronger environmental policies.
+      </p>
+    </div>
   </div>
 
+  <!-- SECOND ROW: chart right, text left -->
+  <div class="row reverse-layout">
+    <div class="text">
+      <p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+        The accompanying <span style="color:#0077b6; font-weight:bold;">humidity chart</span> further supports these observations. 
+        <span style="color:#f4a261; font-weight:bold;">Russia</span> records the 
+        <span style="color:#e63946; font-weight:bold;">highest humidity levels</span>, 
+        correlating with its status as one of the world’s 
+        <span style="color:#e63946; font-weight:bold;">largest greenhouse gas emitters</span> 
+        and underscoring the intensifying impacts of 
+        <span style="color:#e63946; font-weight:bold;">climate change</span>. 
+        In comparison, <span style="color:#264653; font-weight:bold;">Australia</span> experiences 
+        <span style="color:#2a9d8f; font-weight:bold;">slightly higher humidity</span> than the 
+        <span style="color:#f4a261; font-weight:bold;">United States</span>, 
+        reflecting differences in regional weather patterns and coastal influences, 
+        yet both countries continue to face challenges in balancing 
+        <span style="color:#2a9d8f; font-weight:bold;">emission control</span> 
+        with <span style="color:#2a9d8f; font-weight:bold;">climate resilience</span>.
+      </p>
+    </div>
+    <div id="vis5" class="chart"></div>
+  </div>
+  <p style="font-style:italic; color:#555; margin-top:-70px;">
+  As rising temperatures reshape weather patterns and melt polar ice, their silent <br> 
+  consequence begins to surface — the steady rise of our global seas.
+</p>
+</div>
+
+  <!-- ======= 3. SEA LEVEL ======= -->
+  <div class="section-container">
+    <h2>Sea Level</h2>
+    <div class="row">
+      <div class="text"  style = "margin-top: -20px;">
+<p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+  <span style="color:#0077b6; font-weight:bold;">Sea level rise</span> data shows 
+  <span style="color:#e63946; font-weight:bold;">increasing rates of change globally</span>. 
+  The heatmaps and line chart below illustrate 
+  <span style="color:#0077b6; font-weight:bold;">global variability</span> across the years and the 
+  <span style="color:#e63946; font-weight:bold;">overall accelerating trend</span>. 
+  Higher <span style="color:#e63946; font-weight:bold;">sea levels</span> are typically observed during the 
+  <span style="color:#2a9d8f; font-weight:bold;">spring and summer months</span>, 
+  when warmer ocean temperatures cause 
+  <span style="color:#e63946; font-weight:bold;">thermal expansion</span> of water, 
+  amplifying short-term rises. 
+  Over the years, the <span style="color:#0077b6; font-weight:bold;">global mean sea level</span> 
+  has steadily <span style="color:#e63946; font-weight:bold;">increased</span>, 
+  reaching approximately <span style="color:#e63946; font-weight:bold;">56.20 mm in December 2019</span> — 
+  one of the highest recorded levels to date. 
+  This rise reflects the cumulative impact of 
+  <span style="color:#e63946; font-weight:bold;">melting glaciers</span>, 
+  <span style="color:#e63946; font-weight:bold;">ice sheets</span>, and 
+  <span style="color:#e63946; font-weight:bold;">thermal expansion</span> caused by 
+  <span style="color:#e63946; font-weight:bold;">global warming</span>. 
+  Such acceleration poses a major threat to 
+  <span style="color:#2a9d8f; font-weight:bold;">coastal ecosystems</span>, 
+  <span style="color:#e63946; font-weight:bold;">low-lying regions</span>, and 
+  <span style="color:#e63946; font-weight:bold;">human livelihoods</span> worldwide. 
+  Continued increases in sea level heighten risks of 
+  <span style="color:#e63946; font-weight:bold;">flooding</span>, 
+  <span style="color:#e63946; font-weight:bold;">erosion</span>, and the loss of 
+  <span style="color:#2a9d8f; font-weight:bold;">habitable land</span>, 
+  reinforcing the urgent need for 
+  <span style="color:#2a9d8f; font-weight:bold;">global climate action</span> 
+  and <span style="color:#2a9d8f; font-weight:bold;">sustainable adaptation strategies</span>.
+</p>
+      </div>
+      <div id="vis6" class="chart" style="margin-top:-10px;"></div>
+    </div>
+
+    <div class="row">
+      <div id="vis7" class="chart" style="margin-top: 0px;"></div>
+      <div id="vis8" class="chart" style="margin-top:-40px; margin-left:-100px; margin-right: 30px;"></div>
+    </div>
+
+    <p style="font-style:italic; color:#555; margin-top:-140px;">
+  As oceans swell and coastlines shift, the atmosphere responds in kind — <br> 
+  redistributing moisture, reshaping rainfall, and redefining the world’s <br> precipitation patterns.
+</p>
+  </div>
+
+  <!-- ======= 4. PRECIPITATION ======= -->
+  <div class="section-container">
+    <h2>Precipitation</h2>
+    <div class="row">
+      <div id="vis9" class="chart"></div>
+      <div class="text" style="margin-top:-20px; margin-bottom:35px;">
+<p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+  <span style="color:#0077b6; font-weight:bold;">Changes in precipitation patterns</span> reveal 
+  <span style="color:#0077b6; font-weight:bold;">regional disparities</span> — some areas experience 
+  <span style="color:#2a9d8f; font-weight:bold;">increased rainfall</span>, while others face 
+  <span style="color:#e63946; font-weight:bold;">prolonged dry seasons</span>. 
+  These shifts have major implications for 
+  <span style="color:#0077b6; font-weight:bold;">agriculture</span>, 
+  <span style="color:#0077b6; font-weight:bold;">ecosystems</span>, and 
+  <span style="color:#0077b6; font-weight:bold;">climate stability</span>. 
+  The regions experiencing the 
+  <span style="color:#2a9d8f; font-weight:bold;">wettest rainfall</span> levels include 
+  <span style="color:#f4a261; font-weight:bold;">Australia</span>, 
+  <span style="color:#f4a261; font-weight:bold;">the United States</span>, 
+  <span style="color:#f4a261; font-weight:bold;">Denmark</span>, and the 
+  <span style="color:#f4a261; font-weight:bold;">French Southern Territories</span>, 
+  where increased moisture contributes to 
+  <span style="color:#2a9d8f; font-weight:bold;">lush vegetation</span> and 
+  <span style="color:#2a9d8f; font-weight:bold;">stronger hydrological cycles</span>. 
+  In contrast, the 
+  <span style="color:#e63946; font-weight:bold;">driest regions</span> — including 
+  <span style="color:#f4a261; font-weight:bold;">Mauritania</span>, 
+  <span style="color:#f4a261; font-weight:bold;">Canada</span>, 
+  <span style="color:#f4a261; font-weight:bold;">Libya</span>, and 
+  <span style="color:#f4a261; font-weight:bold;">San Marino</span> — 
+  face <span style="color:#e63946; font-weight:bold;">reduced rainfall</span>, 
+  which intensifies <span style="color:#e63946; font-weight:bold;">drought conditions</span> and 
+  <span style="color:#e63946; font-weight:bold;">water scarcity</span>.
+</p>
+
+<p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+  From a <span style="color:#0077b6; font-weight:bold;">scientific perspective</span>, 
+  <span style="color:#0077b6; font-weight:bold;">precipitation</span> plays a crucial role in regulating 
+  <span style="color:#0077b6; font-weight:bold;">Earth’s climate system</span>. 
+  When rainfall increases in certain areas, it can enhance 
+  <span style="color:#2a9d8f; font-weight:bold;">carbon absorption</span> by forests and soils, 
+  helping to offset some 
+  <span style="color:#2a9d8f; font-weight:bold;">greenhouse gas emissions</span>. 
+  However, excessive rainfall and storms can lead to 
+  <span style="color:#e63946; font-weight:bold;">flooding</span>, 
+  <span style="color:#e63946; font-weight:bold;">soil erosion</span>, and 
+  <span style="color:#e63946; font-weight:bold;">ecosystem disruption</span>, 
+  worsening the effects of <span style="color:#e63946; font-weight:bold;">climate change</span>. 
+  On the other hand, declining precipitation and prolonged dryness reduce 
+  <span style="color:#e63946; font-weight:bold;">soil moisture</span>, 
+  diminish <span style="color:#e63946; font-weight:bold;">crop yields</span>, and 
+  increase the likelihood of <span style="color:#e63946; font-weight:bold;">wildfires</span>, 
+  releasing more <span style="color:#e63946; font-weight:bold;">carbon dioxide</span> into the atmosphere. 
+  Thus, <span style="color:#0077b6; font-weight:bold;">precipitation</span> can act as both a 
+  <span style="color:#2a9d8f; font-weight:bold;">mitigating</span> and 
+  <span style="color:#e63946; font-weight:bold;">worsening factor</span> for 
+  <span style="color:#0077b6; font-weight:bold;">climate change</span>, 
+  depending on its balance across regions.
+</p>
+      </div>
+    </div>
+    <p style="font-style:italic; color:#555; margin-top:-20px;">
+  As rain nourishes the earth and shapes the rhythm of life, it feeds the forests that stand as our planet’s 
+  greatest guardians — storing carbon, sheltering biodiversity, and balancing the climate we depend on.
+</p>
+  </div>
+
+<!-- ======= 5. FOREST COVERAGE ======= -->
+<div class="section-container">
+  <h2>Forest Coverage</h2>
+
+  <!-- FIRST ROW: text left, chart right -->
+  <div class="row reverse-layout" style = "margin-top: -5px;">
+    <div class="text">
+      <p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+        <span style="color:#2a9d8f; font-weight:bold;">Forest coverage</span> is a critical factor in 
+        <span style="color:#2a9d8f; font-weight:bold;">carbon storage</span> and 
+        <span style="color:#2a9d8f; font-weight:bold;">biodiversity preservation</span>. 
+        These charts explore 
+        <span style="color:#0077b6; font-weight:bold;">deforestation trends</span> and 
+        variations in <span style="color:#2a9d8f; font-weight:bold;">green cover</span> by region, 
+        emphasising the vital role of forests in mitigating 
+        <span style="color:#0077b6; font-weight:bold;">climate change</span>. 
+        <span style="color:#f4a261; font-weight:bold;">Asia</span> records the 
+        <span style="color:#e63946; font-weight:bold;">highest air quality index</span>, 
+        which is a <span style="color:#e63946; font-weight:bold;">negative indicator</span> of 
+        heavy <span style="color:#e63946; font-weight:bold;">pollution</span> levels. 
+        This aligns with the fact that 
+        <span style="color:#f4a261; font-weight:bold;">China</span> and other Asian nations are among the 
+        <span style="color:#e63946; font-weight:bold;">largest greenhouse gas emitters</span>, 
+        corresponding with their relatively 
+        <span style="color:#e63946; font-weight:bold;">low EV adoption</span> and 
+        <span style="color:#e63946; font-weight:bold;">energy efficiency scores</span>.
+      </p>
+    </div>
+    <div id="vis10" class="chart"></div>
+  </div>
+
+  <!-- SECOND ROW: chart left, text right -->
+  <div class="row normal-layout">
+    <div id="vis11" class="chart"></div>
+    <div class="text">
+      <p style="font-family:'Nunito Sans', sans-serif; line-height:1.6;">
+        In contrast, <span style="color:#2a9d8f; font-weight:bold;">Europe</span> demonstrates 
+        <span style="color:#2a9d8f; font-weight:bold;">high EV adoption</span> and 
+        <span style="color:#2a9d8f; font-weight:bold;">strong energy efficiency performance</span>, 
+        reflecting its commitment to 
+        <span style="color:#2a9d8f; font-weight:bold;">climate action</span> and 
+        leadership in implementing 
+        <span style="color:#2a9d8f; font-weight:bold;">environmental policies</span>. 
+        Countries such as <span style="color:#f4a261; font-weight:bold;">Norway</span> and 
+        <span style="color:#f4a261; font-weight:bold;">Sweden</span> lead globally in 
+        <span style="color:#2a9d8f; font-weight:bold;">electric vehicle adoption</span>, while 
+        <span style="color:#f4a261; font-weight:bold;">Sweden</span> and 
+        <span style="color:#f4a261; font-weight:bold;">Finland</span> also show the 
+        <span style="color:#2a9d8f; font-weight:bold;">highest forest coverage</span> rates. 
+        Together, these trends highlight 
+        <span style="color:#2a9d8f; font-weight:bold;">Europe</span> as the 
+        <span style="color:#2a9d8f; font-weight:bold;">most climate-progressive region</span> globally. 
+        Meanwhile, <span style="color:#264653; font-weight:bold;">Australia</span> stands out as a 
+        <span style="color:#2a9d8f; font-weight:bold;">climate leader</span> in the southern hemisphere, 
+        although its <span style="color:#e63946; font-weight:bold;">energy efficiency score</span> 
+        remains <span style="color:#e63946; font-weight:bold;">moderate</span> compared to top European performers.
+      </p>
+      <p style="font-style:italic; color:#555; margin-top:20px;">
+  From the depths of the oceans to the crowns of the forests, our planet tells a single story — one of rising challenges and enduring hope, where every action toward preservation shapes the climate future we still have the power to protect.
+</p>
+    </div>
+  </div>
+</div>
+
+<!-- ======= 7. CONCLUSION ======= -->
+<div class="section-container">
+  <h2>Conclusion</h2>
+
+  <p style="font-family:'Nunito Sans', sans-serif; margin-top: -10px; margin-bottom: -15px;">
+    The data across global indicators paints a complex picture of our planet’s evolving climate. 
+    <span style="color:#f4a261; font-weight:bold;">Asia</span>, led by 
+    <span style="color:#f4a261; font-weight:bold;">China</span>, remains the 
+    <span style="color:#e63946; font-weight:bold;">largest greenhouse gas emitter</span>, followed closely by the 
+    <span style="color:#f4a261; font-weight:bold;">United States</span>. 
+    <span style="color:#264653; font-weight:bold;">Australia</span>, though smaller in scale, is still a 
+    <span style="color:#e63946; font-weight:bold;">significant contributor</span>. 
+    Encouragingly, Australia’s 
+    <span style="color:#2a9d8f; font-weight:bold;">energy consumption</span> from 
+    <span style="color:#2a9d8f; font-weight:bold;">coal, natural gas, and oil</span> 
+    remains comparatively lower than many industrial nations — 
+    a <span style="color:#2a9d8f; font-weight:bold;">positive sign</span> of gradual transition toward cleaner energy.
+  </p>
+
+  <p style="font-family:'Nunito Sans', sans-serif; margin-bottom: -15px;">
+    However, Australia also records one of the 
+    <span style="color:#e63946; font-weight:bold;">highest surface temperature increases</span> globally — 
+    rising by approximately 
+    <span style="color:#e63946; font-weight:bold;">2.5°C in 2025</span> — 
+    coupled with <span style="color:#2a9d8f; font-weight:bold;">moderate humidity levels</span>. 
+    The <span style="color:#0077b6; font-weight:bold;">global sea level</span> continues to rise steadily, 
+    signalling an urgent warning for coastal regions and ecosystems. 
+    These changes intensify the effects of 
+    <span style="color:#e63946; font-weight:bold;">global warming</span> and 
+    <span style="color:#e63946; font-weight:bold;">climate instability</span>, 
+    leading to more frequent <span style="color:#e63946; font-weight:bold;">flooding</span>, 
+    <span style="color:#e63946; font-weight:bold;">extreme weather events</span>, and 
+    <span style="color:#e63946; font-weight:bold;">loss of biodiversity</span>.
+  </p>
+
+  <p style="font-family:'Nunito Sans', sans-serif;">
+    In terms of <span style="color:#0077b6; font-weight:bold;">precipitation</span>, 
+    <span style="color:#f4a261; font-weight:bold;">Australia</span>, 
+    <span style="color:#f4a261; font-weight:bold;">the United States</span>, and 
+    <span style="color:#f4a261; font-weight:bold;">Denmark</span> are among the 
+    <span style="color:#2a9d8f; font-weight:bold;">wettest regions</span>, 
+    while <span style="color:#f4a261; font-weight:bold;">Libya</span> and 
+    <span style="color:#f4a261; font-weight:bold;">Mauritania</span> remain the driest. 
+    <span style="color:#2a9d8f; font-weight:bold;">Europe</span> leads in 
+    <span style="color:#2a9d8f; font-weight:bold;">electric vehicle adoption</span> 
+    and <span style="color:#2a9d8f; font-weight:bold;">forest coverage</span>, 
+    reflecting robust <span style="color:#2a9d8f; font-weight:bold;">climate policies</span> and 
+    sustainable growth. 
+    In contrast, <span style="color:#f4a261; font-weight:bold;">China</span> continues to struggle with 
+    <span style="color:#e63946; font-weight:bold;">poor air quality</span> and 
+    high emissions, illustrating the trade-offs of rapid industrial expansion. 
+    <span style="color:#264653; font-weight:bold;">Australia</span>, while moderate in 
+    <span style="color:#2a9d8f; font-weight:bold;">energy efficiency</span>, 
+    stands at a pivotal point in balancing economic growth with 
+    <span style="color:#2a9d8f; font-weight:bold;">environmental responsibility</span>.
+  </p>
+
+  <p style="font-family:'Nunito Sans', sans-serif; line-height:1.6; color:#555; font-style:italic; margin-top: 10px;">
+    Overall, Australia is moving in a <span style="color:#2a9d8f; font-weight:bold;">promising direction</span> — 
+    taking measured steps toward cleaner energy, stronger climate policies, and sustainable innovation. 
+    Yet, the rising temperatures serve as a reminder that progress must accelerate to safeguard the 
+    <span style="color:#0077b6; font-weight:bold;">future climate</span> for generations to come.
+  </p>
+</div>
+
+<!-- ======= 6. FURTHER INFORMATION ======= -->
+<div class="section-container" style="text-align:center; margin-top:60px;">
+  <h2 style="font-family:'Roboto', sans-serif; font-weight:700;">
+    Want to find out more?
+  </h2>
+  <p style="font-family:'Roboto', sans-serif; line-height:1.6; font-size:18px; max-width:700px; margin:0 auto;">
+    Check out further information on <span style= "font-weight:bold;">climate change</span> 
+    and global action efforts on the 
+    <a href="https://www.un.org/en/climatechange" target="_blank" 
+       style="font-weight:bold; text-decoration:none;">
+      United Nations website.
+    </a>
+  </p>
+</div>
+
+<!-- ======= Meta Information Section ======= -->
+<div class="section-container" 
+     style="width: 80%; text-align:center; font-family:'Nunito Sans',sans-serif; font-size:14px; color:#555; margin-top:10px; padding:10px 0; border-top:1px solid #ccc;">
+  
+  <!-- First line: data sources, author, date -->
+  <p style="margin:0;">
+    <strong style="font-weight:700; color:#333;">Data Sources:</strong> 
+    <a href="https://www.kaggle.com/datasets/goyaladi/climate-insights-dataset" target="_blank" 
+       style="color:#2e7d32; text-decoration:none;">Climate Insights Dataset</a> 
+    and 
+    <a href="https://www.kaggle.com/datasets/ojasmishra89/global-climate-energy-transition-2025" target="_blank" 
+       style="color:#2e7d32; text-decoration:none;">Global Climate Energy Transition 2025</a> 
+    &nbsp;|&nbsp;
+    <strong style="font-weight:700; color:#333;">Author:</strong> Nina Huynh 
+    &nbsp;|&nbsp;
+    <strong style="font-weight:700; color:#333;">Date:</strong> 19th Oct 2025
+  </p>
+
+  <!-- Second line: references -->
+  <p style="margin:5px 0 0 0;">
+    <strong style="font-weight:700; color:#333;">References:</strong> 
+    <a href="https://www.un.org/en/climatechange" target="_blank" 
+       style="color:#2e7d32; text-decoration:none;">United Nations Climate Change</a>
+  </p>
+</div>
+
+
+
+  <!-- ======= Vega Embeds ======= -->
   <script>
-    // Embed CO₂ Emissions Map
-    vegaEmbed('#vis1', 'Chart1Map.vg.json', { actions: false })
-      .then(() => console.log("CO₂ Map loaded."))
-      .catch(console.error);
+    // Location
+    vegaEmbed('#vis1', 'Map.vg.json', { actions:false, width:450, height:280 });
+    vegaEmbed('#vis3', 'Trellis.vg.json', { 
+      actions:false, 
+      width:300, 
+      height:20,
+      autosize:{ type:"fit", contains:"padding" },
+      config:{
+        view:{ continuousWidth:360, continuousHeight:260 },
+        facet:{ spacing:5 }
+      }
+    });
 
-    // Embed Temperature Anomaly Bar Chart
-    vegaEmbed('#vis2', 'BarChart.vg.json', { actions: false })
-      .then(() => console.log("Temperature chart loaded."))
-      .catch(console.error);
+    // Temperature
+    vegaEmbed('#vis4', 'Bar.vg.json', { actions:false, width:420, height:260 });
+    vegaEmbed('#vis5', 'Bullet.vg.json', { actions:false, width:420, height:260 });
+
+    // Sea Level
+    vegaEmbed('#vis6', 'Heatmap.vg.json', { actions:false, width:420, height:260 });
+    vegaEmbed('#vis7', 'Heatmap2.vg.json', { actions:false, width:420, height:260 });
+    vegaEmbed('#vis8', 'Line.vg.json', { actions:false, width:420, height:260 });
+
+    // Precipitation
+    vegaEmbed('#vis9', 'BoxPlot.vg.json', { actions:false, width:420, height:260 });
+
+    // Forest Coverage
+    vegaEmbed('#vis10', 'Parallel.vg.json', { actions:false, width:420, height:260 });
+    vegaEmbed('#vis11', 'Pyramid.vg.json', { actions:false, width:420, height:260 });
   </script>
 
 </body>

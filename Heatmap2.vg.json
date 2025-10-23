@@ -1,0 +1,68 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "background": null,
+  "data": {
+    "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/GlobalMeanSeaLevelData.csv"
+  },
+
+  "params": [
+    {
+      "name": "year_selection",
+      "value": 2000,
+      "bind": {
+        "input": "range",
+        "min": 1993,
+        "max": 2020,
+        "step": 1,
+        "name": "Select Year: "
+      }
+    }
+  ],
+
+  "transform": [
+    {
+      "filter": "year(datum.Time) == year_selection"
+    },
+    {
+      "calculate": "format(datum['GMSL (monthly)'], '.2f') + ' mm'",
+      "as": "Sea_Level_with_Units"
+    }
+  ],
+
+  "mark": {"type": "rect", "tooltip": true},
+
+  "encoding": {
+    "x": {
+      "field": "Time",
+      "timeUnit": "month",
+      "type": "ordinal",
+      "title": "Month",
+      "axis": {
+        "labelAngle": 0,
+        "labelFontSize": 10,
+        "titleFontSize": 12
+      }
+    },
+    "y": {
+      "field": "Time",
+      "timeUnit": "year",
+      "type": "ordinal",
+      "title": "Year"
+    },
+    "color": {
+      "field": "GMSL (monthly)",
+      "type": "quantitative",
+      "scale": {"scheme": "blues"},
+      "legend": {"title": "Global Average Sea Level (mm)"}
+    },
+    "tooltip": [
+      {"field": "Time", "type": "temporal", "title": "Date"},
+      {"field": "Sea_Level_with_Units", "type": "nominal", "title": "Sea Level"}
+    ]
+  },
+
+  "config": {
+    "view": {"strokeWidth": 0},
+    "axis": {"domain": false}
+  }
+}

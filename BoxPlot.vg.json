@@ -1,0 +1,78 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Box plot of precipitation for Top 10 rainiest and Bottom 10 driest countries with improved tooltip.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/climate_change_data.csv"
+  },
+
+  "transform": [
+    {
+      "joinaggregate": [
+        {"op": "mean", "field": "Precipitation", "as": "avg_precip"}
+      ],
+      "groupby": ["Country"]
+    },
+    {
+      "window": [{"op": "dense_rank", "as": "rank_desc"}],
+      "sort": [{"field": "avg_precip", "order": "descending"}]
+    },
+    {
+      "window": [{"op": "dense_rank", "as": "rank_asc"}],
+      "sort": [{"field": "avg_precip", "order": "ascending"}]
+    },
+    {
+      "calculate": "datum.rank_desc <= 10 ? 'Top 10 Rainiest' : (datum.rank_asc <= 10 ? 'Bottom 10 Driest' : null)",
+      "as": "category"
+    },
+    { "filter": "datum.category != null" }
+  ],
+
+  "mark": {
+    "type": "boxplot",
+    "extent": "min-max",
+    "tooltip": {"content": "encoding"}
+  },
+
+  "encoding": {
+    "x": {
+      "field": "Country",
+      "type": "nominal",
+      "title": "Country Name",
+      "sort": {"field": "avg_precip", "order": "descending"}
+    },
+    "y": {
+      "field": "Precipitation",
+      "type": "quantitative",
+      "title": "Precipitation (mm)",
+      "scale": {"zero": false}
+    },
+    "color": {
+      "field": "category",
+      "type": "nominal",
+      "title": "Precipitation Category",
+      "scale": {
+        "domain": ["Top 10 Rainiest", "Bottom 10 Driest"],
+        "range": ["#0d47a1", "#ef4444"]
+      },
+      "legend": {"orient": "top"}
+    },
+    "tooltip": [
+      {"field": "Country", "title": "Country"},
+      {"field": "category", "title": "Category"},
+      {
+        "field": "Precipitation",
+        "title": "Precipitation (mm)",
+        "format": ".2f"
+      },
+      {
+        "field": "avg_precip",
+        "title": "Average Precipitation (mm)",
+        "format": ".2f"
+      }
+    ]
+  },
+  "config": {
+    "axis": {"labelAngle": -45},
+    "view": {"stroke": null}
+  }
+}

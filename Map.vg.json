@@ -1,0 +1,112 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "background": null,
+  "title": {
+    "text": "Global Total Greenhouse CO₂ Emissions in Million Tonnes by Country, 2025",
+    "subtitle": "Filter by CO₂ emissions threshold using the slider below",
+    "anchor": "start"
+  },
+  "width": 700,
+  "height": 400,
+  "autosize": {"type": "pad"},
+  "projection": {"type": "equalEarth"},
+  
+  "params": [
+    {
+      "name": "CO2Filter",
+      "value": 0,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 12000,
+        "step": 100,
+        "name": "Minimum CO₂ Emissions (million tonnes): "
+      }
+    }
+  ],
+
+  "layer": [
+    {
+      "data": {"sphere": true},
+      "mark": {"type": "geoshape", "fill": "#e6f2ff"}
+    },
+    {
+      "data": {"graticule": true},
+      "mark": {"type": "geoshape", "stroke": "#cccccc", "strokeWidth": 0.5}
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/vega/vega-datasets/master/data/world-110m.json",
+        "format": {"type": "topojson", "feature": "countries"}
+      },
+      "mark": {"type": "geoshape", "fill": "#f0e4d7", "stroke": "white"}
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/GlobalClimateData2025Updated.csv"
+      },
+      "transform": [
+        {"calculate": "toNumber(datum.co2_emissions_mt)", "as": "CO2_Value"},
+        {"filter": "datum.CO2_Value >= CO2Filter"},
+        {
+          "calculate": "isFinite(datum.CO2_Value) ? format(datum.CO2_Value, ',') + ' million tonnes CO₂' : '—'",
+          "as": "CO2_Label"
+        },
+        {
+          "calculate": "format(datum.population_millions, ',') + ' million people'",
+          "as": "Pop_Label"
+        }
+      ],
+      "mark": {"type": "circle", "opacity": 0.9, "stroke": "white", "strokeWidth": 0.9},
+      "encoding": {
+        "longitude": {"field": "Longitude", "type": "quantitative"},
+        "latitude": {"field": "Latitude", "type": "quantitative"},
+        "size": {
+          "field": "co2_emissions_mt",
+          "type": "quantitative",
+          "scale": {"range": [20, 1500], "type": "sqrt"},
+          "legend": {"title": "Total CO₂ (Million Tonnes)", "orient": "right"}
+        },
+        "color": {
+          "field": "region",
+          "type": "nominal",
+          "scale": {"scheme": "dark2"},
+          "legend": {"title": "World Regions", "orient": "bottom"}
+        },
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Country"},
+          {"field": "region", "type": "nominal", "title": "Region"},
+          {"field": "Pop_Label", "type": "nominal", "title": "Population"},
+          {"field": "energy_efficiency_score", "type": "quantitative", "title": "Energy Efficiency Score"},
+          {"field": "CO2_Label", "type": "nominal", "title": "Total CO₂ Emissions"}
+        ]
+      }
+    },
+    {
+      "data": {
+        "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/GlobalClimateData2025Updated.csv"
+      },
+      "mark": {
+        "type": "text",
+        "align": "middle",
+        "baseline": "middle",
+        "dx": 18,
+        "fontSize": 10,
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "longitude": {"field": "Longitude", "type": "quantitative"},
+        "latitude": {"field": "Latitude", "type": "quantitative"},
+        "text": {"field": "country", "type": "nominal"},
+        "color": {"value": "black"},
+        "opacity": {
+          "condition": {
+            "test": "datum['country'] == 'China' || datum['country'] == 'United States' || datum['country'] == 'India' || datum['country'] == 'Russia' || datum['country'] == 'Japan' || datum['country'] == 'Australia'",
+            "value": 1
+          },
+          "value": 0
+        }
+      }
+    }
+  ]
+}

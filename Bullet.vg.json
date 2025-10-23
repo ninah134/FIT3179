@@ -1,0 +1,113 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Bullet chart showing humidity levels for Australia, China, Congo, US, and Russia",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/climate_change_data.csv"
+  },
+  "transform": [
+    {
+      "filter": "indexof(['Australia','China','Congo','United States of America','Russian Federation'], datum.Country) >= 0 || indexof(['Australia','China','Congo','US','Russia'], datum.location) >= 0"
+    },
+    {
+      "aggregate": [
+        {"op": "min", "field": "Humidity", "as": "min_humidity"},
+        {"op": "mean", "field": "Humidity", "as": "avg_humidity"},
+        {"op": "max", "field": "Humidity", "as": "max_humidity"},
+        {"op": "median", "field": "Humidity", "as": "median_humidity"}
+      ],
+      "groupby": ["Country"]
+    },
+    {"calculate": "datum.avg_humidity - 5", "as": "measure_start"},
+    {"calculate": "datum.avg_humidity + 5", "as": "measure_end"},
+    {"calculate": "datum.avg_humidity", "as": "marker_value"}
+  ],
+  "facet": {
+    "row": {
+      "field": "Country",
+      "type": "ordinal",
+      "header": {
+        "labelAngle": 0,
+        "title": "Country name",
+        "labelAlign": "left"
+      }
+    }
+  },
+  "spacing": 10,
+  "spec": {
+    "encoding": {
+      "x": {
+        "type": "quantitative",
+        "title": "Humidity (%)",
+        "scale": {"nice": false}
+      }
+    },
+    "layer": [
+      {
+        "mark": {"type": "bar", "color": "#eee"},
+        "encoding": {
+          "x": {"field": "max_humidity"},
+          "tooltip": [
+            {"field": "Country", "type": "nominal", "title": "Country Name"},
+            {"field": "max_humidity", "type": "quantitative", "title": "Max Humidity", "format": ".2f"}
+          ]
+        }
+      },
+      {
+        "mark": {"type": "bar", "color": "#ddd"},
+        "encoding": {
+          "x": {"field": "avg_humidity"},
+          "tooltip": [
+            {"field": "Country", "type": "nominal", "title": "Country Name"},
+            {"field": "avg_humidity", "type": "quantitative", "title": "Avg Humidity", "format": ".2f"}
+          ]
+        }
+      },
+      {
+        "mark": {"type": "bar", "color": "#ccc"},
+        "encoding": {
+          "x": {"field": "min_humidity"},
+          "tooltip": [
+            {"field": "Country", "type": "nominal", "title": "Country Name"},
+            {"field": "min_humidity", "type": "quantitative", "title": "Min Humidity", "format": ".2f"}
+          ]
+        }
+      },
+      {
+        "mark": {"type": "bar", "color": "lightpink", "size": 10},
+        "encoding": {
+          "x": {"field": "measure_end"},
+          "tooltip": [
+            {"field": "Country", "type": "nominal", "title": "Country Name"},
+            {"field": "measure_end", "type": "quantitative", "title": "High Target Zone (Average +5)", "format": ".2f"}
+          ]
+        }
+      },
+      {
+        "mark": {"type": "bar", "color": "darkred", "size": 10},
+        "encoding": {
+          "x": {"field": "measure_start"},
+          "tooltip": [
+            {"field": "Country", "type": "nominal", "title": "Country Name"},
+            {"field": "measure_start", "type": "quantitative", "title": "Low Target Zone (Average -5)", "format": ".2f"}
+          ]
+        }
+      },
+      {
+        "mark": {"type": "tick", "color": "black"},
+        "encoding": {
+          "x": {"field": "marker_value"},
+          "tooltip": [
+            {"field": "Country", "type": "nominal", "title": "Country Name"},
+            {"field": "marker_value", "type": "quantitative", "title": "Average Humidity (Black Marker)", "format": ".2f"}
+          ]
+        }
+      }
+    ]
+  },
+  "resolve": {"scale": {"x": "independent"}},
+  "config": {
+    "tick": {"thickness": 2},
+    "scale": {"barBandPaddingInner": 0},
+    "view": {"stroke": null}
+  }
+}

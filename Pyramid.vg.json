@@ -1,0 +1,89 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Pyramid chart comparing Forest Coverage (%) and EV Adoption (%) by Country, with two interactive sliders for filtering.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/GlobalClimateData2025Updated.csv"
+  },
+  "params": [
+    {
+      "name": "EV_Filter",
+      "value": 0,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "name": "Minimum EV Adoption (%): "
+      }
+    },
+    {
+      "name": "Forest_Filter",
+      "value": 0,
+      "bind": {
+        "input": "range",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "name": "Minimum Forest Coverage (%): "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.forest_coverage_percent != null && datum.ev_adoption_percent != null && datum.country != null && datum.region != null"
+    },
+    {
+      "filter": "datum.ev_adoption_percent >= EV_Filter && datum.forest_coverage_percent >= Forest_Filter"
+    },
+    {
+      "fold": ["forest_coverage_percent", "ev_adoption_percent"],
+      "as": ["indicator", "value"]
+    },
+    {
+      "calculate": "datum.indicator == 'forest_coverage_percent' ? -datum.value : datum.value",
+      "as": "signed_value"
+    },
+    {
+      "calculate": "datum.indicator == 'forest_coverage_percent' ? 'Forest Coverage (%)' : 'EV Adoption (%)'",
+      "as": "category"
+    },
+    {
+      "calculate": "format(datum.value, '.2f') + '%'",
+      "as": "value_label"
+    }
+  ],
+  "width": 450,
+  "height": 410,
+  "mark": "bar",
+  "encoding": {
+    "y": {
+      "field": "country",
+      "type": "nominal",
+      "title": "Country Name",
+      "sort": "-x"
+    },
+    "x": {
+      "aggregate": "mean",
+      "field": "signed_value",
+      "title": "Adoption and Implementation Rate (%)",
+      "axis": {"format": ".0f", "grid": false}
+    },
+    "color": {
+      "field": "category",
+      "type": "nominal",
+      "scale": {"range": ["#2e8b57", "#f59e0b"]},
+      "title": "Environmental Indicator",
+      "legend": {"orient": "top"}
+    },
+    "tooltip": [
+      {"field": "country", "title": "Country"},
+      {"field": "region", "title": "Region"},
+      {"field": "category", "title": "Indicator"},
+      {"field": "value_label", "title": "Value"}
+    ]
+  },
+  "config": {
+    "view": {"stroke": null},
+    "axis": {"grid": false}
+  }
+}

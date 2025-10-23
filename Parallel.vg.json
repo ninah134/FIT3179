@@ -1,0 +1,89 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Parallel-style normalized comparison chart showing only top (max) values above each axis.",
+  "data": {
+    "url": "https://raw.githubusercontent.com/ninah134/FIT3179/refs/heads/main/Assignments/GlobalClimateData2025Updated.csv"
+  },
+  "width": 600,
+  "height": 300,
+  "transform": [
+    {"filter": "datum.forest_coverage_percent != null"},
+    {
+      "fold": [
+        "forest_coverage_percent",
+        "air_quality_index",
+        "energy_efficiency_score",
+        "ev_adoption_percent"
+      ],
+      "as": ["key", "value"]
+    },
+    {
+      "calculate": "datum.key == 'forest_coverage_percent' ? 'Forest Coverage (%)' : datum.key == 'air_quality_index' ? 'Air Quality Index' : datum.key == 'energy_efficiency_score' ? 'Energy Efficiency Score' : datum.key == 'ev_adoption_percent' ? 'EV Adoption (%)' : datum.key",
+      "as": "indicator"
+    },
+    {
+      "joinaggregate": [
+        {"op": "min", "field": "value", "as": "min"},
+        {"op": "max", "field": "value", "as": "max"}
+      ],
+      "groupby": ["indicator"]
+    },
+    {"calculate": "(datum.value - datum.min) / (datum.max - datum.min)", "as": "norm_val"}
+  ],
+  "layer": [
+    {
+      "mark": {"type": "rule", "color": "#ccc"},
+      "encoding": {
+        "x": {"field": "indicator", "type": "nominal"}
+      }
+    },
+    {
+      "mark": {"type": "line", "opacity": 0.9},
+      "encoding": {
+        "color": {
+          "type": "nominal",
+          "field": "region",
+          "title": "Region",
+          "scale": {"scheme": "Accent"}
+        },
+        "detail": {"type": "nominal", "field": "country"},
+        "x": {"type": "nominal", "field": "indicator", "title": "Indicators"},
+        "y": {"type": "quantitative", "field": "norm_val", "axis": null},
+        "tooltip": [
+          {"field": "country", "type": "nominal", "title": "Country"},
+          {"field": "region", "type": "nominal", "title": "Region"},
+          {"field": "indicator", "type": "nominal", "title": "Indicator"},
+          {"field": "value", "type": "quantitative", "title": "Value", "format": ".2f"}
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "center",
+        "baseline": "bottom",
+        "dy": -10,
+        "fontSize": 11,
+        "color": "#444",
+        "fontStyle": "italic"
+      },
+      "encoding": {
+        "x": {"field": "indicator", "type": "nominal"},
+        "y": {"value": 0},
+        "text": {"field": "max", "type": "quantitative", "format": ".2f"}
+      }
+    }
+  ],
+  "config": {
+    "axis": {
+      "domain": false,
+      "labelAngle": 0,
+      "tickColor": "#ccc",
+      "title": null,
+      "labelFontSize": 10,
+      "labelPadding": 5,
+      "labelFontWeight": "normal"
+    },
+    "view": {"stroke": null}
+  }
+}
